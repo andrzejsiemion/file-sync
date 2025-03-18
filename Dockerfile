@@ -15,3 +15,4 @@ ENV CRON_SCHEDULE="*/10 * * * *"
 
 # Ensure `sync.sh` starts on container boot
 ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["/app/sync.sh"]
