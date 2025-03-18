@@ -32,7 +32,7 @@ docker pull ghcr.io/andrzejsiemion/git-sync:0.0.2
 
 ```sh
 docker run -d --name git-sync \
-  -e GIT_REPOL=60 \
+  -e GIT_REPO=name_of_remote_repository \
   -e GIT_BRANCH=main \
   -e GIT_EMAIL=user@example.com \
   -e GIT_NAME=robot \
