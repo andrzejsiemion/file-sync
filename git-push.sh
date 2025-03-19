@@ -29,3 +29,4 @@ else
   git commit -m "Automated sync of sensor data"
   git push origin "$GIT_BRANCH" --force
   echo "Successfully pushed data to remote repository."
+fi
