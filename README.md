@@ -1,4 +1,4 @@
-# Git Sync - Docker Image
+# File Sync - Docker Image
 
 ## Disclaimer
 
@@ -19,19 +19,19 @@ This Docker image push file from local folder to remote repository.
 To pull the latest version of the Docker image:
 
 ```sh
-docker pull ghcr.io/andrzejsiemion/git-sync:latest
+docker pull ghcr.io/andrzejsiemion/file-sync:latest
 ```
 
 Or pull a specific version:
 
 ```sh
-docker pull ghcr.io/andrzejsiemion/git-sync:0.0.2
+docker pull ghcr.io/andrzejsiemion/file-sync:0.0.5
 ```
 
 ### Run the Container
 
 ```sh
-docker run -d --name git-sync \
+docker run -d --name file-sync \
   -e GIT_REPO=name_of_remote_repository \
   -e GIT_BRANCH=main \
   -e GIT_EMAIL=user@example.com \
