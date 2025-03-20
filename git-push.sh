@@ -4,7 +4,7 @@ cd /app/data || exit 1
 
 # Ensure Git is initialized
 if [ ! -d ".git" ]; then
-  echo "No Git repository found. Cloning the repository..."
+  echo "No Git repository found! Cloning again..."
   git clone --branch "$GIT_BRANCH" "$GIT_REPO" /app/data || {
     echo "Failed to clone repository!"
     exit 1
@@ -17,8 +17,12 @@ cd /app/data || exit 1
 # Ensure we are on the correct branch
 git checkout "$GIT_BRANCH"
 
+# Reset repository state if necessary
+git fetch origin
+git reset --hard origin/"$GIT_BRANCH"  # Ensure latest remote state is restored
+
 # Pull the latest changes before adding files
-git pull --rebase origin "$GIT_BRANCH" || {
+git pull origin "$GIT_BRANCH" || {
   echo "Failed to pull latest changes!"
   exit 1
 }
