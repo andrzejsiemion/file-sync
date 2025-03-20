@@ -2,24 +2,25 @@
 
 cd /app/data || exit 1
 
-# Ensure Git is initialized and the correct remote is set
+# Ensure Git is initialized
 if [ ! -d ".git" ]; then
   echo "No Git repository found. Cloning the repository..."
-  git clone --branch "$GIT_BRANCH" "$GIT_REPO" /tmp/repo || {
+  git clone --branch "$GIT_BRANCH" "$GIT_REPO" /app/data || {
     echo "Failed to clone repository!"
     exit 1
   }
-  mv /tmp/repo/.git /app/data/  # Move Git repo to /data
-  rm -rf /tmp/repo
 fi
 
-# Move into the repo (should be inside /data/)
+# Move into the repo
 cd /app/data || exit 1
 
 # Ensure we are on the correct branch
 git checkout "$GIT_BRANCH"
 
-# Add only the files inside /data to the 'data/' folder in the repository
+# Pull the latest changes before adding files
+git pull origin "$GIT_BRANCH"
+
+# Add all new changes
 git add -A
 
 # Check for changes before committing
@@ -27,6 +28,6 @@ if git diff-index --quiet HEAD --; then
   echo "No changes to commit."
 else
   git commit -m "Automated sync of sensor data"
-  git push origin "$GIT_BRANCH" --force
+  git push origin "$GIT_BRANCH"
   echo "Successfully pushed data to remote repository."
 fi

@@ -29,12 +29,10 @@ git config --global pull.ff only
 # Clone only if missing
 if [ ! -d "/app/data/.git" ]; then
   echo "No Git repository found in /data. Cloning..."
-  git clone --branch "$GIT_BRANCH" "$GIT_REPO" /tmp/repo || {
+  git clone --branch "$GIT_BRANCH" "$GIT_REPO" /app/data || {
     echo "Failed to clone repository!"
     exit 1
   }
-  mv /tmp/repo/.git /app/data/  # Move the Git repo metadata
-  rm -rf /tmp/repo
 else
   echo "Git repository detected, pulling latest changes..."
   git -C /app/data pull origin "$GIT_BRANCH"
