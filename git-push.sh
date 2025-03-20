@@ -18,9 +18,12 @@ cd /app/data || exit 1
 git checkout "$GIT_BRANCH"
 
 # Pull the latest changes before adding files
-git pull origin "$GIT_BRANCH"
+git pull --rebase origin "$GIT_BRANCH" || {
+  echo "Failed to pull latest changes!"
+  exit 1
+}
 
-# Add all new changes
+# Add only new/modified files (do not remove remote ones)
 git add -A
 
 # Check for changes before committing

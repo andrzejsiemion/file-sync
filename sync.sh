@@ -26,16 +26,21 @@ git config --global --add safe.directory /app/data
 git config --global pull.rebase false
 git config --global pull.ff only
 
-# Clone only if missing
+# Clone repository only if missing
 if [ ! -d "/app/data/.git" ]; then
-  echo "No Git repository found in /data. Cloning..."
+  echo "No Git repository found. Cloning..."
   git clone --branch "$GIT_BRANCH" "$GIT_REPO" /app/data || {
     echo "Failed to clone repository!"
     exit 1
   }
 else
   echo "Git repository detected, pulling latest changes..."
-  git -C /app/data pull origin "$GIT_BRANCH"
+  git -C /app/data reset --hard  # Ensure local repo is not corrupted
+  git -C /app/data clean -fd      # Remove untracked files but keep remote ones
+  git -C /app/data pull --rebase origin "$GIT_BRANCH" || {
+    echo "Git pull failed. Exiting..."
+    exit 1
+  }
 fi
 
 # Set up cron job to sync every X minutes
