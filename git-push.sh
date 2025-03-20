@@ -17,15 +17,17 @@ cd /app/data || exit 1
 # Ensure we are on the correct branch
 git checkout "$GIT_BRANCH"
 
-# Reset repository state if necessary
-git fetch origin
-git reset --hard origin/"$GIT_BRANCH"  # Ensure latest remote state is restored
+# Stash any local modifications (prevents conflicts)
+git stash
 
-# Pull the latest changes before adding files
-git pull origin "$GIT_BRANCH" || {
+# Pull the latest changes before adding new files
+git pull --rebase origin "$GIT_BRANCH" || {
   echo "Failed to pull latest changes!"
   exit 1
 }
+
+# Apply stashed changes (if any)
+git stash pop || echo "No stashed changes to apply."
 
 # Add only new/modified files (do not remove remote ones)
 git add -A
