@@ -63,10 +63,10 @@ git reset --hard origin/"$GIT_BRANCH"
 git pull origin "$GIT_BRANCH"
 
 # Set up cron job to sync every X minutes
-echo "$CRON_SCHEDULE /app/git-push.sh" > /var/spool/cron/crontabs/root
+echo "$CRON_SCHEDULE /app/git-push.sh && /app/rsync-to-nas.sh" > /var/spool/cron/crontabs/root
 chmod 600 /var/spool/cron/crontabs/root
 
-echo "Git sync service started. Schedule: $CRON_SCHEDULE"
+echo "Git sync + Rsync service started. Schedule: $CRON_SCHEDULE"
 
 # Start cron in the foreground
 exec busybox crond -f -l 2
